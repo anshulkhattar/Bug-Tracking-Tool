@@ -87,7 +87,7 @@ int main()
 						NET_BUF_SIZE, sendrecvflag, 
 						(struct sockaddr*)&addr_con, &addrlen); 
 		//printf("%s",net_buf);
-		if(strcmp(net_buf,"null\n")==0){
+		if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
 		//clearBuf(net_buf);
 	 
          
