@@ -7,6 +7,7 @@
 #include <sys/socket.h> 
 #include <sys/types.h> 
 #include <unistd.h> 
+#include "login.h"
 
 #define IP_PROTOCOL 0 
 #define IP_ADDRESS "127.0.0.1" // localhost 
@@ -57,6 +58,10 @@ int main()
 	char net_buf[NET_BUF_SIZE]; 
 	FILE* fp; 
 
+	//user login	
+	char res=login();
+	if(res=='s'){ 	
+
 	// socket() 
 	sockfd = socket(AF_INET, SOCK_DGRAM, 
 					IP_PROTOCOL); 
@@ -73,6 +78,9 @@ int main()
 
 		 
 		printf("\nBug reported\n"); 
-	 
+	 }
+	else{
+		printf("Invalid credentials\n");
+		}
 	return 0; 
 } 
