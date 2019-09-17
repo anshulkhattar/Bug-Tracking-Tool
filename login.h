@@ -4,8 +4,19 @@ char login()
 char id[20],pass[20],login[40];
 printf("Enter username: ");
 scanf("%s",id);
-printf("Enter password: ");
-scanf("%s",pass);
+char c=' ';
+int l=0;
+printf("\n Enter the password [max length 10] : ");
+while (l<=9){
+    pass[l]=getch();
+    c=pass[l];
+    if(c==13) break;
+    else printf("*");
+    l++;
+}
+pass[l]='\0';
+l=0;
+
 strcpy(login,id);
 strcat(login,"-");
 strcat(login,pass);
