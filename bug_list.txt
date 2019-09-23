@@ -1,0 +1,15 @@
+B707-appcrash-assigned-T62466-21/09/2019
+B458-commeror-new-none-20/09/2019
+B652-err404-assigned-T62190-01/09/2019
+B326-displayerr-resloved-T62765-03/09/2019
+B895-nobatchfound-assigned-T5686-06/09/2019
+B123-missingcommands-new-none-T61968-18/09/2019
+B745-semanticerr-resolved-T63399-19/09/2019
+B359-cntrlflwerr-assigned-T64461-12/09/2019
+B741-obsoletesoft-new-none-04/09/2019
+B357-passerr-assigned-T63399-18/09/019
+B420-orientationerr-new-none-19/09/2019
+B519-noerrhandling-resloved-T63393-10/09/2019
+B649-timebomb-assigned-T57684-16/09/2019
+B657-hidden-new-none-20/09/2019
+B893-uploaderr-assigned-T65663-21/09/2019
