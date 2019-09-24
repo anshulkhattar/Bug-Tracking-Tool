@@ -85,6 +85,7 @@ int main()
 			if (recvFile(net_buf, NET_BUF_SIZE)) { 
 				break; 
 			}
+		return 0;
 		} }
 	else{
 		printf("Invalid credentials");
