@@ -12,7 +12,7 @@
 #define IP_PROTOCOL 0 
 #define IP_ADDRESS "127.0.0.1" // localhost 
 #define PORT_NO 15050 
-#define NET_BUF_SIZE 32 
+#define NET_BUF_SIZE 2048
 #define cipherKey 'S' 
 #define sendrecvflag 0 
 
@@ -85,6 +85,7 @@ int main()
 			if (recvFile(net_buf, NET_BUF_SIZE)) { 
 				break; 
 			}
+		return 0;
 		} }
 	else{
 		printf("Invalid credentials");
