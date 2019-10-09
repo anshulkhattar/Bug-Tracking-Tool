@@ -9,6 +9,8 @@
 #include <unistd.h> 
 #include "login.h"
 
+#include <time.h>
+
 #define IP_PROTOCOL 0 
 #define IP_ADDRESS "127.0.0.1" // localhost 
 #define PORT_NO 15050 
@@ -58,9 +60,20 @@ int main()
 	char net_buf[NET_BUF_SIZE]; 
 	FILE* fp; 
 
+	//for creating bug info
+	char bugName[20];
+	int bugIdSequence;
+	char bugIdSequenceStirng[20];
+	char bugId[4];
+	char reportingDate[30];
+	char reportingTesterId[10];
+	char assignedToDeveloperId[]="null";
+	char bugStatus[]="new";
+	
+
 	//user login	
-	char res=login();
-	if(res=='s'){ 	
+	char *res=login();
+	if(strlen(res)==6){ 	
 
 	// socket() 
 	sockfd = socket(AF_INET, SOCK_DGRAM, 
@@ -71,11 +84,55 @@ int main()
 
 	
 		printf("\nPlease enter bug details:\n"); 
-		scanf("%s", net_buf); 
+		scanf("%s", bugName); 
+
+		//creating bug info stroing format
+		strcpy(net_buf,bugStatus);
+		strcat(net_buf," ");
+
+		srand((unsigned int)time(NULL));
+
+		strcpy(bugId,"B");
+		bugIdSequence=rand()%900+100;
+		sprintf(bugIdSequenceStirng, "%d", bugIdSequence);
+		strcat(bugId,bugIdSequenceStirng);
+
+		strcat(net_buf,bugId);
+		strcat(net_buf," ");
+		
+		strcat(net_buf,bugName);
+		strcat(net_buf," ");
+
+		//getting current date
+		time_t t = time(NULL);
+		struct tm tm = *localtime(&t);
+		char yearString[10];
+		char monthString[10];
+		char dayString[10];
+		sprintf(dayString, "%d", tm.tm_mday);
+		strcpy(reportingDate,dayString);
+		strcat(reportingDate,"/");
+		sprintf(monthString, "%d", tm.tm_mon + 1);
+		strcat(reportingDate,monthString);
+		strcat(reportingDate,"/");
+		sprintf(yearString, "%d", tm.tm_year + 1900);
+		strcat(reportingDate,yearString);
+		strcat(net_buf,reportingDate);
+		strcat(net_buf," ");
+
+		strcpy(reportingTesterId,res);
+		strcat(net_buf,reportingTesterId);
+		strcat(net_buf," ");
+		
+		strcat(net_buf,assignedToDeveloperId);
+		
 		sendto(sockfd, net_buf, NET_BUF_SIZE, 
 			sendrecvflag, (struct sockaddr*)&addr_con, 
 			addrlen); 
-
+		
+		strcpy(net_buf,"");
+		strcpy(bugIdSequenceStirng,"");
+		strcpy(bugId,"");
 		 
 		printf("\nBug reported\n"); 
 	 }
