@@ -59,8 +59,8 @@ int main()
 	FILE* fp;
 
 	//user login	
-	char res=login();
-	if(res=='s'){ 
+	char *res=login();
+	if(strlen(res)==6){ 
 
 	// socket() 
 	sockfd = socket(AF_INET, SOCK_DGRAM, 
