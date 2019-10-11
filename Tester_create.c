@@ -79,8 +79,16 @@ int main()
 	sockfd = socket(AF_INET, SOCK_DGRAM, 
 					IP_PROTOCOL); 
 
+
 	if (sockfd < 0) 
-		printf("\nConnection denied\n"); 
+		printf("\nConnection denied\n");
+	else
+	{
+		sendto(sockfd, res, sizeof(res), 
+			sendrecvflag, (struct sockaddr*)&addr_con, 
+			addrlen);
+	}
+	 
 
 	
 		printf("\nPlease enter bug details:\n"); 
@@ -88,7 +96,7 @@ int main()
 
 		//creating bug info stroing format
 		strcpy(net_buf,bugStatus);
-		strcat(net_buf," ");
+		strcat(net_buf,"      ");
 
 		srand((unsigned int)time(NULL));
 
@@ -98,10 +106,10 @@ int main()
 		strcat(bugId,bugIdSequenceStirng);
 
 		strcat(net_buf,bugId);
-		strcat(net_buf," ");
+		strcat(net_buf,"      ");
 		
 		strcat(net_buf,bugName);
-		strcat(net_buf," ");
+		strcat(net_buf,"      ");
 
 		//getting current date
 		time_t t = time(NULL);
@@ -118,11 +126,11 @@ int main()
 		sprintf(yearString, "%d", tm.tm_year + 1900);
 		strcat(reportingDate,yearString);
 		strcat(net_buf,reportingDate);
-		strcat(net_buf," ");
+		strcat(net_buf,"      ");
 
 		strcpy(reportingTesterId,res);
 		strcat(net_buf,reportingTesterId);
-		strcat(net_buf," ");
+		strcat(net_buf,"      ");
 		
 		strcat(net_buf,assignedToDeveloperId);
 		
@@ -130,6 +138,8 @@ int main()
 			sendrecvflag, (struct sockaddr*)&addr_con, 
 			addrlen); 
 		
+		
+		//for clearing the values
 		strcpy(net_buf,"");
 		strcpy(bugIdSequenceStirng,"");
 		strcpy(bugId,"");

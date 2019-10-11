@@ -1,5 +1,4 @@
 new      B958      bug56      11/10/2019      T73000      null
-new      B177      bug2      11/10/2019      T7301      null
 new      B121      bug5      11/10/2019      T73000      null
 new      B711      bug6      11/10/2019      T73000      null
 new      B995      bug78      11/10/2019      T73000      null

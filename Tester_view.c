@@ -32,17 +32,23 @@ char Cipher(char ch)
 
 // function to receive file 
 int recvFile(char* buf, int s) 
-{ 
-	int i; 
+{
+	int i;
 	char ch; 
+
+	printf("\n");
+	printf("Status   Bug ID   Bug Name   Date Reported   Created By   Assigned To\n");
+	printf("---------------------------------------------------------------------\n");
 	for (i = 0; i < s; i++) { 
 		ch = buf[i]; 
 		ch = Cipher(ch); 
+
 		if (ch == EOF) 
 			return 1; 
 		else
-			printf("%c", ch); 
+			printf("%c",ch);
 	} 
+	
 	return 0; 
 } 
 
@@ -57,6 +63,8 @@ int main()
 	addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS); 
 	char net_buf[NET_BUF_SIZE]; 
 	FILE* fp;
+	
+
 
 	//user login	
 	char *res=login();
@@ -68,6 +76,12 @@ int main()
 
 	if (sockfd < 0) 
 		printf("\nConnection denied\n"); 
+	else
+	{
+		sendto(sockfd, res, sizeof(res), 
+			sendrecvflag, (struct sockaddr*)&addr_con, 
+			addrlen);
+	}
  
 		strcpy(net_buf,"null");		 
 		sendto(sockfd, net_buf, NET_BUF_SIZE, 
@@ -82,11 +96,11 @@ int main()
 							&addrlen); 
 
 			// process 
-			if (recvFile(net_buf, NET_BUF_SIZE)) { 
-				break; 
-			}
-		return 0;
-		} }
+			if (recvFile(net_buf, NET_BUF_SIZE)) {
+					break; 
+						}
+					return 0;
+					} }
 	else{
 		printf("Invalid credentials");
 		}

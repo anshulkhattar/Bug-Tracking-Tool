@@ -57,14 +57,15 @@ int sendFile(FILE* fp, char* buf, int s)
 // driver code 
 int main() 
 { 
-	int sockfd, nBytes; 
+	int sockfd, nBytes, idBytes; 
 	struct sockaddr_in addr_con; 
 	int addrlen = sizeof(addr_con); 
 	addr_con.sin_family = AF_INET; 
 	addr_con.sin_port = htons(PORT_NO); 
 	addr_con.sin_addr.s_addr = INADDR_ANY; 
 	char net_buf[NET_BUF_SIZE]; 
-	FILE* fp; 
+	char id[20];
+	FILE* fp,*fp1; 
 
 
 	// socket() 
@@ -80,21 +81,42 @@ int main()
 		printf("\nWelcome to the bug tracker\n"); 
 
 		while(1){ 
+
+		idBytes = recvfrom(sockfd, id, 
+						sizeof(id), sendrecvflag, 
+						(struct sockaddr*)&addr_con, &addrlen);	
+
 		
 		clearBuf(net_buf); 
 
 		nBytes = recvfrom(sockfd, net_buf, 
 						NET_BUF_SIZE, sendrecvflag, 
-						(struct sockaddr*)&addr_con, &addrlen); 
+						(struct sockaddr*)&addr_con, &addrlen);
+
+
 		//printf("%s",net_buf);
 		if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
 		//clearBuf(net_buf);
 	 
          
-  
+			char var[100];
+
+
             	// process
 	    	fp=fopen("abc.txt","r"); 
-            	if (sendFile(fp, net_buf, NET_BUF_SIZE)) { 
+			fp1=fopen("temp.txt","w");
+			while(fgets(var, sizeof(var), fp)!=NULL){
+					if(strstr(var,id)){
+					fprintf(fp1,"%s",var);}
+			}
+			fclose(fp1);
+
+			fp1=fopen("temp.txt","r");
+			
+
+
+
+            	if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
                 	sendto(sockfd, net_buf, NET_BUF_SIZE, 
                 	       sendrecvflag,  
                 	    (struct sockaddr*)&addr_con, addrlen); 
@@ -107,6 +129,7 @@ int main()
                 	(struct sockaddr*)&addr_con, addrlen); 
             	clearBuf(net_buf);
 			fclose(fp);
+			fclose(fp1);
 		printf("\nBugs details sent\n");		
 		}
 		else{			
