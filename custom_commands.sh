@@ -1,23 +1,19 @@
 #!/bin/bash
 
-function testerview(){
-gcc /home/anshul/Bug-Tracking-Tool/Tester_view.c -o testerView
-./testerView
-}
-function testercreate(){
-gcc /home/anshul/Bug-Tracking-Tool/Tester_create.c -o testerCreate
-./testerCreate
+function tester(){
+gcc /home/anshul/Bug-Tracking-Tool/Tester.c -o tester
+./tester $1
 }
 
-function bgtool(){
+function bgt(){
     if [ "$1" == "tester" ]
     then 
         if [ "$2" == "view" ]
         then
-            testerview
+            tester view
         elif [ "$2" == "create" ]
         then
-            testercreate
+            tester create
         fi
     fi
 

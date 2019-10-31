@@ -23,13 +23,11 @@ void clearBuf(char* b)
 	for (i = 0; i < NET_BUF_SIZE; i++) 
 		b[i] = '\0'; 
 } 
-
 // function to encrypt 
 char Cipher(char ch) 
 { 
 	return ch ^ cipherKey; 
 } 
-
 // function sending file 
 int sendFile(FILE* fp, char* buf, int s) 
 { 
@@ -42,7 +40,6 @@ int sendFile(FILE* fp, char* buf, int s)
 			buf[i] = Cipher(buf[i]); 
 		return 1; 
 	} 
-
 	char ch, ch2; 
 	for (i = 0; i < s; i++) { 
 		ch = fgetc(fp); 
@@ -53,7 +50,6 @@ int sendFile(FILE* fp, char* buf, int s)
 	} 
 	return 0; 
 } 
-
 // driver code 
 int main() 
 { 
@@ -66,79 +62,67 @@ int main()
 	char net_buf[NET_BUF_SIZE]; 
 	char id[20];
 	FILE* fp,*fp1; 
-
-
 	// socket() 
 	sockfd = socket(AF_INET, SOCK_DGRAM, IP_PROTOCOL); 
-
 	if (sockfd < 0) 
 		printf("\nConnection issue\n"); 
-
 	// bind() 
 	bind(sockfd, (struct sockaddr*)&addr_con, sizeof(addr_con));
-
-	 
 		printf("\nWelcome to the bug tracker\n"); 
-
 		while(1){ 
-
 		idBytes = recvfrom(sockfd, id, 
 						sizeof(id), sendrecvflag, 
 						(struct sockaddr*)&addr_con, &addrlen);	
-
-		
 		clearBuf(net_buf); 
 
-		nBytes = recvfrom(sockfd, net_buf, 
-						NET_BUF_SIZE, sendrecvflag, 
-						(struct sockaddr*)&addr_con, &addrlen);
 
+		if(id[0]=='T'){
 
-		//printf("%s",net_buf);
-		if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
-		//clearBuf(net_buf);
-	 
-         
-			char var[100];
+			clearBuf(net_buf); 
 
+			nBytes = recvfrom(sockfd, net_buf, 
+							NET_BUF_SIZE, sendrecvflag, 
+							(struct sockaddr*)&addr_con, &addrlen);
+			if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
+				char var[100];
+				// process
+				fp=fopen("bugs.txt","r"); 
+				fp1=fopen("temp.txt","w");
+				while(fgets(var, sizeof(var), fp)!=NULL){
+						if(strstr(var,id)){
+						fprintf(fp1,"%s",var);}
+				}
+				fclose(fp1);
 
-            	// process
-	    	fp=fopen("abc.txt","r"); 
-			fp1=fopen("temp.txt","w");
-			while(fgets(var, sizeof(var), fp)!=NULL){
-					if(strstr(var,id)){
-					fprintf(fp1,"%s",var);}
+				fp1=fopen("temp.txt","r");
+					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
+						sendto(sockfd, net_buf, NET_BUF_SIZE, 
+							sendrecvflag,  
+							(struct sockaddr*)&addr_con, addrlen); 
+					} 
+				// send 
+					sendto(sockfd, net_buf, NET_BUF_SIZE, 
+						sendrecvflag, 
+						(struct sockaddr*)&addr_con, addrlen); 
+					clearBuf(net_buf);
+				fclose(fp);
+				fclose(fp1);
+			printf("\nBugs details sent\n");		
 			}
-			fclose(fp1);
-
-			fp1=fopen("temp.txt","r");
-			
-
-
-
-            	if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
-                	sendto(sockfd, net_buf, NET_BUF_SIZE, 
-                	       sendrecvflag,  
-                	    (struct sockaddr*)&addr_con, addrlen); 
-                 
-            	} 
-  
-            	// send 
-            	sendto(sockfd, net_buf, NET_BUF_SIZE, 
-                	   sendrecvflag, 
-                	(struct sockaddr*)&addr_con, addrlen); 
-            	clearBuf(net_buf);
-			fclose(fp);
-			fclose(fp1);
-		printf("\nBugs details sent\n");		
+			else{			
+				printf("\nBug details Received: %s\n", net_buf);
+				fp=fopen("bugs.txt","a");
+				fprintf(fp,"%s",net_buf);
+				fprintf(fp,"%s","\n");
+				fclose(fp);
+				printf("\nBug added to the database\n"); 
+			}
 		}
-		else{			
-			printf("\nBug details Received: %s\n", net_buf);
-			fp=fopen("abc.txt","a");
-			fprintf(fp,"%s",net_buf);
-			fprintf(fp,"%s","\n");
-			fclose(fp);
-			printf("\nBug added to the database\n"); 
+		else if(id[0]=='D'){
+
+		}
+		else{
+
 		}
  }
         	return 0; 
