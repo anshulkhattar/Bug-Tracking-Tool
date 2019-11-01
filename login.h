@@ -57,8 +57,19 @@ strcat(login,"-");
 strcat(login,pass);
 strcat(login,"\n");
 //printf("%s",login);
-char filename[] = "idpass.txt";
-  FILE *file = fopen ( filename, "r" );
+char testerCredentials[] = "tCredentials.txt";
+char developerCredentials[] = "dCredentials.txt";
+char projectManagerCredentials[] = "pmCredentials.txt";
+
+  FILE *file;
+  if(login[0]=='T') 
+  file= fopen ( testerCredentials, "r" );
+
+  else if(login[0]=='D') 
+  file= fopen ( developerCredentials, "r" );
+
+  else if(login[0]=='P') 
+  file= fopen ( projectManagerCredentials, "r" );
 
   if (file != NULL) {
     char line [1000];
@@ -71,11 +82,9 @@ char filename[] = "idpass.txt";
 		{	
 		fclose(file);		
 		return "f";}
-	
-   
 } 
   }
   else {
-    perror(filename);
+    perror("Credentials not forund");
   }
 }

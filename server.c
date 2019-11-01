@@ -121,7 +121,26 @@ int main()
 		else if(id[0]=='D'){
 
 		}
-		else{
+		else if(id[0]=='P'){
+			if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
+				// process
+				fp=fopen("bugs.txt","r"); 
+					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
+						sendto(sockfd, net_buf, NET_BUF_SIZE, 
+							sendrecvflag,  
+							(struct sockaddr*)&addr_con, addrlen); 
+					} 
+				// send 
+					sendto(sockfd, net_buf, NET_BUF_SIZE, 
+						sendrecvflag, 
+						(struct sockaddr*)&addr_con, addrlen); 
+					clearBuf(net_buf);
+				fclose(fp);
+			printf("\nBugs details sent\n");		
+			}
+			else{			
+				 
+			}
 
 		}
  }
