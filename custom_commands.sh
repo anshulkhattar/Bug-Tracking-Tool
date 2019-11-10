@@ -10,6 +10,11 @@ gcc /home/anshul/Bug-Tracking-Tool/ProjectManager.c -o pm
 ./pm $1   
 }
 
+function developer(){
+gcc /home/anshul/Bug-Tracking-Tool/Developer.c -o developer
+./developer $1   
+}
+
 function bgt(){
     if [ "$1" == "tester" ]
     then 
@@ -20,7 +25,7 @@ function bgt(){
         then
             tester create
         fi
-    if [ "$1" == "pm" ]
+    elif [ "$1" == "pm" ]
     then 
         if [ "$2" == "view" ]
         then
@@ -29,6 +34,14 @@ function bgt(){
         then
             pm assign
         fi
+    elif [ "$1" == "developer" ]
+    then 
+        if [ "$2" == "view" ]
+        then
+            pm view
+        elif [ "$2" == "update" ]
+        then
+            pm assign
+        fi
     fi
-
 }
