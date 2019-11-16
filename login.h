@@ -40,16 +40,10 @@ printf("Enter password: ");
 
 	while(l<7)
 	{
-	 
 	pass[l]=getch();	
-	
-	
-	
-	
 	l++;
 	}
 	pass[0]=' ';
-	//printf("%s",pass);
 	
 
 strcpy(login,id);
