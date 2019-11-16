@@ -108,7 +108,14 @@ int main(int argc,char** argv)
 					}
 	else
 			{
+				char bugid[10];
+				printf("\nEnter bug id\n");
+				//gets(bugid);	
+				scanf("%s",bugid);
 
+				sendto(sockfd, bugid, sizeof(bugid), 
+				sendrecvflag, (struct sockaddr*)&addr_con, 
+				addrlen);
 			
 			}
 	}

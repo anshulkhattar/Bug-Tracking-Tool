@@ -62,7 +62,7 @@ int main()
 	char net_buf[NET_BUF_SIZE]; 
 	char id[20];
 	char bugId[10];
-	FILE* fp,*fp1; 
+	FILE* fp,*fp1,*fp2; 
 	// socket() 
 	sockfd = socket(AF_INET, SOCK_DGRAM, IP_PROTOCOL); 
 	if (sockfd < 0) 
@@ -76,7 +76,7 @@ int main()
 						sizeof(id), sendrecvflag, 
 						(struct sockaddr*)&addr_con, &addrlen);
 
-		printf("%s",id);	
+		//printf("%s",id);	
 		clearBuf(net_buf); 
 
 
@@ -183,8 +183,42 @@ int main()
 			clearBuf(id);	
 			}
 			else{
-				
-			}
+				char var[100];
+				int cur;
+				clearBuf(bugId);
+
+				bugIdBytes = recvfrom(sockfd, bugId, 
+						sizeof(id), sendrecvflag, 
+						(struct sockaddr*)&addr_con, &addrlen);
+
+				fp=fopen("bugs.txt","r+"); 
+				fp2=fopen("temp1.txt","a"); 
+				while(fgets(var, sizeof(var), fp)!=NULL)
+				{
+				if(strstr(var,bugId))
+									{	cur=ftell(fp);
+																	
+										if((var[0]=='n' && var[1]=='e' && var[2]=='w')||(var[0]=='a' && var[1]=='s' && var[2]=='s'&& var[3]=='i'&& var[4]=='g'&& var[5]=='n'&& var[6]=='e'&& var[7]=='d'))
+										{
+										var[0]='r';
+										var[1]='e';
+										var[2]='s';
+										var[3]='o';
+										var[4]='l';
+										var[5]='v';
+										var[6]='e';
+										var[7]='d';
+										fseek(fp,-strlen(var), SEEK_CUR);
+										fprintf(fp,"%s",var);
+										}
+									
+									}
+								else
+								continue;		
+				}
+			fclose(fp);
+			fclose(fp2);
+					}
 		}
  }
         	return 0; 

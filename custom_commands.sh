@@ -38,10 +38,10 @@ function bgt(){
     then 
         if [ "$2" == "view" ]
         then
-            pm view
+            developer view
         elif [ "$2" == "update" ]
         then
-            pm assign
+            developer update
         fi
     fi
 }
