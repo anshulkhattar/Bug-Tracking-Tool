@@ -65,7 +65,7 @@ int main(int argc,char** argv)
 	addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS); 
 	char net_buf[NET_BUF_SIZE]; 
 	FILE* fp;
-	
+	char bugId[10],developerId[10];
 
 
 	//user login	
@@ -108,7 +108,17 @@ int main(int argc,char** argv)
 					}
 	else
 		{
-            printf("assign module");
+            	printf("\nEnter Bug Id: ");
+                scanf("%s",bugId);
+				printf("\nEnter Developer Id: ");
+                scanf("%s",developerId);
+                clearBuf(net_buf);
+                strcpy(net_buf,bugId);
+                sendto(sockfd, net_buf, NET_BUF_SIZE, 
+                    sendrecvflag, (struct sockaddr*)&addr_con, 
+                    addrlen);
+
+                    return 0;
 		}
 	}
 	else{

@@ -13,7 +13,7 @@ resolved B353      bug73      31/10/2019      T73000      D34572
 new      B997      bug789      31/10/2019      T73000      null
 new      B824      bug69      1/11/2019      T73000      null
 new      B345      bug67      1/11/2019      T73000      null
-new      B121      mmm12      10/11/2019      T73000      null
+resolved B121      mmm12      10/11/2019      T73000      null
 new      B808      bug09      13/11/2019      T73000      null
 new      B570      bug12      21/11/2019      T73000      null
 new      B508      B234      22/11/2019      T73000      null

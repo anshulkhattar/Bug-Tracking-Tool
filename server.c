@@ -212,13 +212,22 @@ int main()
 		
 		else if(id[0]=='P'){
 			clearBuf(net_buf); 
-			
+
 			nBytes = recvfrom(sockfd, net_buf, 
 							NET_BUF_SIZE, sendrecvflag, 
 							(struct sockaddr*)&addr_con, &addrlen);
 			if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
+				char var[100];
 				// process
-				fp1=fopen("bugs.txt","r");
+				fp=fopen("bugs.txt","r"); 
+				fp1=fopen("temp.txt","w");
+				while(fgets(var, sizeof(var), fp)!=NULL){
+						if(strstr(var,id)){
+						fprintf(fp1,"%s",var);}
+				}
+				fclose(fp1);
+
+				fp1=fopen("temp.txt","r");
 					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
 						sendto(sockfd, net_buf, NET_BUF_SIZE, 
 							sendrecvflag,  
@@ -232,7 +241,7 @@ int main()
 				fclose(fp);
 				fclose(fp1);
 			printf("\nBugs details sent\n");	
-			clearBuf(id);	
+			clearBuf(id);
 			}
 			else{
 				printf("pm assign menu");
