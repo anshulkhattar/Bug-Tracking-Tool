@@ -70,8 +70,11 @@ int main()
 	// bind() 
 	bind(sockfd, (struct sockaddr*)&addr_con, sizeof(addr_con));
 		printf("\nWelcome to the bug tracker\n"); 
-		while(1){ 
-			clearBuf(id);
+		while(1){
+
+
+
+		clearBuf(id);
 		idBytes = recvfrom(sockfd, id, 
 						sizeof(id), sendrecvflag, 
 						(struct sockaddr*)&addr_con, &addrlen);
@@ -124,32 +127,8 @@ int main()
 				clearBuf(id);
 			}
 		}
-		else if(id[0]=='P'){
-			clearBuf(net_buf); 
+		else if(id[0]=='D'){
 
-			nBytes = recvfrom(sockfd, net_buf, 
-							NET_BUF_SIZE, sendrecvflag, 
-							(struct sockaddr*)&addr_con, &addrlen);
-			if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
-				// process
-				fp1=fopen("bugs.txt","r");
-					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
-						sendto(sockfd, net_buf, NET_BUF_SIZE, 
-							sendrecvflag,  
-							(struct sockaddr*)&addr_con, addrlen); 
-					} 
-				// send 
-					sendto(sockfd, net_buf, NET_BUF_SIZE, 
-						sendrecvflag, 
-						(struct sockaddr*)&addr_con, addrlen); 
-					clearBuf(net_buf);
-				fclose(fp);
-				fclose(fp1);
-			printf("\nBugs details sent\n");	
-			clearBuf(id);	
-			}
-		}
-		else{
 			clearBuf(net_buf); 
 
 			nBytes = recvfrom(sockfd, net_buf, 
@@ -182,46 +161,88 @@ int main()
 			printf("\nBugs details sent\n");	
 			clearBuf(id);	
 			}
-			else{
+			else{	
 				char var[100];
+				char bugid[10];	
+				FILE* fp;
+				FILE* fp2;
 				int cur;
-				clearBuf(bugId);
-
-				bugIdBytes = recvfrom(sockfd, bugId, 
-						sizeof(id), sendrecvflag, 
-						(struct sockaddr*)&addr_con, &addrlen);
-
-				fp=fopen("bugs.txt","r+"); 
-				fp2=fopen("temp1.txt","a"); 
-				while(fgets(var, sizeof(var), fp)!=NULL)
+				
+				fp2=fopen("bugs.txt","r+"); 
+				//fp2=fopen("temp1.txt","a"); 
+				while(fgets(var, sizeof(var), fp2)!=NULL)
 				{
-				if(strstr(var,bugId))
-									{	cur=ftell(fp);
+				if(strstr(var,net_buf))
+									{	cur=ftell(fp2);
 																	
-										if((var[0]=='n' && var[1]=='e' && var[2]=='w')||(var[0]=='a' && var[1]=='s' && var[2]=='s'&& var[3]=='i'&& var[4]=='g'&& var[5]=='n'&& var[6]=='e'&& var[7]=='d'))
-										{
-										var[0]='r';
-										var[1]='e';
-										var[2]='s';
-										var[3]='o';
-										var[4]='l';
-										var[5]='v';
-										var[6]='e';
-										var[7]='d';
-										fseek(fp,-strlen(var), SEEK_CUR);
-										fprintf(fp,"%s",var);
+										if((var[0]=='n' && var[1]=='e' && var[2]=='w')||(var[0]=='a' && var[1]=='s' && var[2]=='s'&& 								 var[3]=='i'&& var[4]=='g'&& var[5]=='n'&& var[6]=='e'&& var[7]=='d'))
+											{
+											
+											//fseek(fp, cur, SEEK_SET);
+											var[0]='r';
+											var[1]='e';
+											var[2]='s';
+											var[3]='o';
+											var[4]='l';
+											var[5]='v';
+											var[6]='e';
+											var[7]='d';
+											fseek(fp2,-strlen(var), SEEK_CUR);
+											//fprintf(fp,"%s","\n");
+											//fseek(fp, 0, SEEK_SET);
+											fprintf(fp2,"%s",var);
+											}
+										
 										}
-									
-									}
-								else
-								continue;		
+									else
+									continue;
+										
+										
+										
 				}
-			fclose(fp);
-			fclose(fp2);
-					}
-		}
- }
-        	return 0; 
+				//while(fgets(var, sizeof(var), fp)!=NULL)
+				//fprintf(fp2,"%s",var);
 
+				fclose(fp2);
+				//fclose(fp2);
+				
+				clearBuf(id);
+			}
+			}
+		
+		else if(id[0]=='P'){
+			clearBuf(net_buf); 
+			
+			nBytes = recvfrom(sockfd, net_buf, 
+							NET_BUF_SIZE, sendrecvflag, 
+							(struct sockaddr*)&addr_con, &addrlen);
+			if(net_buf[0]=='n' && net_buf[1]=='u' && net_buf[2]=='l' && net_buf[3]=='l'){
+				// process
+				fp1=fopen("bugs.txt","r");
+					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
+						sendto(sockfd, net_buf, NET_BUF_SIZE, 
+							sendrecvflag,  
+							(struct sockaddr*)&addr_con, addrlen); 
+					} 
+				// send 
+					sendto(sockfd, net_buf, NET_BUF_SIZE, 
+						sendrecvflag, 
+						(struct sockaddr*)&addr_con, addrlen); 
+					clearBuf(net_buf);
+				fclose(fp);
+				fclose(fp1);
+			printf("\nBugs details sent\n");	
+			clearBuf(id);	
+			}
+			else{
+				printf("pm assign menu");
+				clearBuf(id);
+			}		
+ 		}
+
+		 else{
+			 continue;
+		 }
 } 
+}
 
