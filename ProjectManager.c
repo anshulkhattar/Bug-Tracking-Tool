@@ -8,6 +8,7 @@
 #include <sys/types.h> 
 #include <unistd.h> 
 #include "login.h"
+#include "replace.h"
 
 #include <time.h>
 
@@ -65,7 +66,7 @@ int main(int argc,char** argv)
 	addr_con.sin_addr.s_addr = inet_addr(IP_ADDRESS); 
 	char net_buf[NET_BUF_SIZE]; 
 	FILE* fp;
-	char bugId[10],developerId[10];
+	
 
 
 	//user login	
@@ -107,19 +108,50 @@ int main(int argc,char** argv)
 					}
 					}
 	else
-		{
-            	printf("\nEnter Bug Id: ");
-                scanf("%s",bugId);
-				printf("\nEnter Developer Id: ");
-                scanf("%s",developerId);
-                clearBuf(net_buf);
-                strcpy(net_buf,bugId);
-                sendto(sockfd, net_buf, NET_BUF_SIZE, 
-                    sendrecvflag, (struct sockaddr*)&addr_con, 
-                    addrlen);
+			{
+                char var[100];
+                char bugid[10],devId[10];	
+                FILE* fp;
+                FILE* fp2;
+                int cur,len;
+                char new_str[100];
+                char* statusUpdate;
+                char *result;
+                printf("\nEnter bug id\n");
+                scanf("%s",bugid);
+                printf("\nEnter dev id\n");
+                scanf("%s",devId);
+                
+                fp=fopen("bugs.txt","r+"); 
+                FILE *file;
+                file=fopen("temp1.txt","a");
+                while(fgets(var, sizeof(var), fp)!=NULL)
+                {
+                len=strlen(var);
+                if(strstr(var,bugid))
+                                    {		
+                                            strcpy(new_str,var);
+                                            statusUpdate=str_replace("new", "assigned", new_str);
+                                            result=str_replace("null", devId, statusUpdate);
+                                            //printf("%s",result);
 
-                    return 0;
-		}
+                                            fprintf(file,"%s",result);
+
+                                        }
+                    else
+                        {
+                            fprintf(file,"%s",var);
+                        }						
+                }
+                fclose(file);
+                fclose(fp);
+
+
+                remove("bugs.txt");
+
+                /* Rename temp file as original file */
+                rename("temp1.txt", "bugs.txt");
+			}
 	}
 	else{
 		printf("Invalid credentials");

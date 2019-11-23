@@ -220,15 +220,7 @@ int main()
 				char var[100];
 				// process
 				fp=fopen("bugs.txt","r"); 
-				fp1=fopen("temp.txt","w");
-				while(fgets(var, sizeof(var), fp)!=NULL){
-						if(strstr(var,id)){
-						fprintf(fp1,"%s",var);}
-				}
-				fclose(fp1);
-
-				fp1=fopen("temp.txt","r");
-					if (sendFile(fp1, net_buf, NET_BUF_SIZE)) { 
+					if (sendFile(fp, net_buf, NET_BUF_SIZE)) { 
 						sendto(sockfd, net_buf, NET_BUF_SIZE, 
 							sendrecvflag,  
 							(struct sockaddr*)&addr_con, addrlen); 
@@ -239,12 +231,12 @@ int main()
 						(struct sockaddr*)&addr_con, addrlen); 
 					clearBuf(net_buf);
 				fclose(fp);
-				fclose(fp1);
+				//fclose(fp1);
 			printf("\nBugs details sent\n");	
 			clearBuf(id);
 			}
 			else{
-				printf("pm assign menu");
+				//printf("pm assign menu");
 				clearBuf(id);
 			}		
  		}
