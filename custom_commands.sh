@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function help(){
+gcc /home/anshul/Bug-Tracking-Tool/commandInfo.c -o commandInfo
+./commandInfo
+}
+
 function tester(){
 gcc /home/anshul/Bug-Tracking-Tool/Tester.c -o tester
 ./tester $1
@@ -43,5 +48,8 @@ function bgt(){
         then
             developer update
         fi
+    elif [ "$1" == "help" ]
+    then 
+        help
     fi
 }
